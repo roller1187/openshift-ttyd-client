@@ -12,18 +12,18 @@ Need oc but don't have a terminal or the ability to install anything? Just run t
 >`oc new-project occli`
 
 * Deploy the OpenShift template : 
->`oc new-app -f https://raw.github.com/roller1187/openshift-ttyd-client/openshift-ttyd-client.json`
+>`oc new-app -f https://raw.githubusercontent.com/roller1187/openshift-ttyd-client/master/openshift-ttyd-client.json`
 
-## OR deploy ttyd from the prebuilt image (ALTERNATIVE) : 
-* Deploy app : 
-> `oc new-app quay.io/aromerot/openshift-ttyd-client
+### OR deploy ttyd from the prebuilt image (ALTERNATIVE) : 
+    * Deploy app : 
+    > `oc new-app quay.io/aromerot/openshift-ttyd-client
 
-* Expose route : 
-> `oc expose svc/openshift-ttyd-client --port 8080` 
+    * Expose route : 
+    > `oc expose svc/openshift-ttyd-client --port 8080` 
 
-Navigate to the exposed route and login to your OpenShift cluster of choice using the oc command:
+* Navigate to the exposed route and login to your OpenShift cluster of choice using the oc command:
 >`oc login https://mycluster.awesomeland.com`
 
-and run whatever commands you want:
+* Run whatever commands you want:
 >`oc get pods --all-namespaces`
 
