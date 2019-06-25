@@ -1,0 +1,146 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "openshift-ttyd-client",
+    "annotations": {
+      "description": "This template deploys an instance of ttyd",
+      "iconClass": "github",
+      "tags": "ttyd,bash,ubi"
+    }
+  },
+  "objects": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "openshift-ttyd-client"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "web",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": 8080,
+            "nodePort": 0
+          }
+        ],
+        "selector": {
+          "name": "openshift-ttyd-client"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      },
+      "status": {
+        "loadBalancer": {}
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "openshift-ttyd-client"
+      },
+      "spec": {
+        "to": {
+          "kind": "Service",
+          "name": "openshift-ttyd-client"
+        },
+        "tls": {
+          "termination": "edge"
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "openshift-ttyd-client"
+      },
+      "spec": {
+        "dockerImageRepository": "quay.io/aromerot/openshift-ttyd-client"
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "openshift-ttyd-client"
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling",
+          "rollingParams": {
+            "updatePeriodSeconds": 1,
+            "intervalSeconds": 1,
+            "timeoutSeconds": 120
+          }
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "openshift-ttyd-client"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "openshift-ttyd-client:latest"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": "${REPLICAS}",
+        "selector": {
+          "name":"openshift-ttyd-client"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "openshift-ttyd-client"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "openshift-ttyd-client",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "securityContext": {
+                  "capabilities": {},
+                  "privileged": false
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst"
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "REPLICAS",
+      "displayName": "Pod replicas",
+      "description": "Number of replicas for this application.",
+      "required": true,
+      "value": "1"
+    }
+  ],
+  "labels": {
+    "template": "openshift-ttyd-client"
+  }
+}
