@@ -9,7 +9,9 @@ Need oc but don't have a terminal or the ability to install anything? Just run t
 ## How do I use this?
 
 * Create a project in openshift : 
->`oc new-project occli`
+```sh
+oc new-project occli
+```
 
 * Deploy the OpenShift template : 
 >`oc new-app -f https://raw.githubusercontent.com/roller1187/openshift-ttyd-client/master/openshift-ttyd-client.json`
