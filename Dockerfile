@@ -25,6 +25,7 @@ RUN groupadd -r ttyd -g 2001 && \
     chmod 755 /ttyd
 
 USER ttyd
+ENV KUBECONFIG=/tmp/.kube/config
 
 RUN oc version
 
